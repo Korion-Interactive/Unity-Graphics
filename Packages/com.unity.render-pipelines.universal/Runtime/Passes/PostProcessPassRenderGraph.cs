@@ -1473,7 +1473,7 @@ namespace UnityEngine.Rendering.Universal
                 cameraTarget = cameraData.xr.renderTarget;
         #endif
             if (dest.nameID == cameraTarget || cameraData.targetTexture != null)
-                cmd.SetViewport(cameraData.pixelRect);
+                cmd.SetViewport(new Rect(0,0,cameraData.pixelWidth, cameraData.pixelHeight));
 
             Blitter.BlitTexture(cmd, sourceTextureHdl, scaleBias, material, 0);
         }
