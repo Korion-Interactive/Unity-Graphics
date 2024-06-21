@@ -28,12 +28,5 @@
       "description": "Collection of scripts with some examples of RenderGraph and how it is used within the Universal Render Pipeline.",
       "path": "Samples~/URPRenderGraphSamples"
     }
-  ],
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/Korion-Interactive/Unity-Graphics.git"
-	},
-	"publishConfig": {
-		"registry":"https://npm.pkg.github.com/@Korion-Interactive"
-	}
+  ]
 }
