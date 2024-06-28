@@ -28,5 +28,6 @@
       "description": "Collection of scripts with some examples of RenderGraph and how it is used within the Universal Render Pipeline.",
       "path": "Samples~/URPRenderGraphSamples"
     }
-  ]
+  ],
+  "_fingerprint": "24f380dfc849a97665e9f1e1de50eca056fc77c4"
 }
