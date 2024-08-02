@@ -1471,9 +1471,9 @@ namespace UnityEngine.Rendering.Universal
         #if ENABLE_VR && ENABLE_XR_MODULE
             if (cameraData.xr.enabled)
                 cameraTarget = cameraData.xr.renderTarget;
-        #endif
+#endif
             if (dest.nameID == cameraTarget || cameraData.targetTexture != null)
-                cmd.SetViewport(new Rect(0,0,cameraData.pixelWidth, cameraData.pixelHeight));
+                cmd.SetViewport(new Rect(0,0,cameraData.pixelWidth * cameraData.renderScale, cameraData.pixelHeight * cameraData.renderScale));
 
             Blitter.BlitTexture(cmd, sourceTextureHdl, scaleBias, material, 0);
         }
