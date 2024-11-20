@@ -11,23 +11,25 @@ editor-pinning-update:
     name: Update pinned editor versions
     agent:
         type: Unity::VM
-        image: package-ci/ubuntu:v2.0.0-947723
+        image: desktop/ubuntu-22.04-desktop:v2.1165007
         flavor: b1.small
     variables:
         CI: true
     commands:
-      -  pip3 config set global.index-url https://artifactory.prd.it.unity3d.com/artifactory/api/pypi/pypi/simple
-      -  pip3 install ruamel.yaml
+      -  sudo apt update
+      -  sudo apt-get install python3 python3-pip unity-downloader-cli -y
+      -  python3 -m pip config set global.index-url https://artifactory.prd.it.unity3d.com/artifactory/api/pypi/pypi/simple
+      -  python3 -m pip install ruamel.yaml
       -  sudo rm -f /etc/apt/sources.list /etc/apt/sources.list.d/{nodesource,teamviewer,deadsnakes-ubuntu-ppa-}*
       -  curl -L https://artifactory.prd.it.unity3d.com/artifactory/api/gpg/key/public | sudo apt-key add -
       -  sudo sh -c "echo 'deb https://artifactory.prd.it.unity3d.com/artifactory/unity-apt-local bionic main' > /etc/apt/sources.list.d/unity.list"
-      -  sudo apt update
-      -  sudo apt install unity-downloader-cli
       -  git config --global user.name "noreply@unity3d.com"
       -  git config --global user.email "noreply@unity3d.com"
       -  git checkout $GIT_BRANCH
-      -  python3 .yamato/script/editor_scripts/update_revisions.py --track trunk --ono-branch $ONO_BRANCH_TRUNK --api-key $ONO_API_KEY --commit-and-push --nr-commits-to-retrieve 1
+      -  git clone git@github.cds.internal.unity3d.com:unity/gfx-sdet-tools.git
+      -  cd gfx-sdet-tools && git rev-parse HEAD
+      -  python3 gfx-sdet-tools/scripts/update_revisions.py --track trunk --unity-branch $ONO_BRANCH_TRUNK --api-key $CDS_GITHUB_SERVICE_TOKEN --commit-and-push --nr-commits-to-retrieve 1 --vcs git
     triggers:
         recurring:
           -  branch: master
-             frequency: 21 * * ?
+             frequency: 21 ? * 7 # At 9pm every Saturday - must happen before the ABV (abv.metafile). 2hrs before is arbitrary
