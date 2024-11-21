@@ -330,6 +330,7 @@ namespace UnityEngine.Rendering.Universal
         [SerializeField] bool m_UseScreenCoordOverride;
         [SerializeField] Vector4 m_ScreenSizeOverride;
         [SerializeField] Vector4 m_ScreenCoordScaleBias;
+        [SerializeField] float m_RenderScaleOverride = -1f;
 
         [NonSerialized] Camera m_Camera;
         // Deprecated:
@@ -779,6 +780,15 @@ namespace UnityEngine.Rendering.Universal
             set => m_AllowHDROutput = value;
         }
 
+        /// <summary>
+        /// Exposes render scale per camera as an override to render pipeline render scale. Override is ignored if value < 0.
+        /// </summary>
+        public float renderScaleOverride
+        {
+            get => m_RenderScaleOverride;
+            set => m_RenderScaleOverride = value;
+        }
+        
         /// <inheritdoc/>
         public void OnBeforeSerialize()
         {
