@@ -1371,26 +1371,9 @@ namespace UnityEngine.Rendering.Universal
         #endif
             if (dest.nameID == cameraTarget || cameraData.targetTexture != null)
             {
-                if (hasFinalPass || !cameraData.resolveFinalTarget)
-                {
-                    // Intermediate target can be scaled with render scale.
-                    // camera.pixelRect is the viewport of the final target in pixels.
-                    // Calculate scaled viewport for the intermediate target,
-                    // for example when inside a camera stack (non-final pass).
-                    var camViewportNormalized = cameraData.camera.rect;
-                    var targetWidth = cameraData.cameraTargetDescriptor.width;
-                    var targetHeight = cameraData.cameraTargetDescriptor.height;
-                    var scaledTargetViewportInPixels = new Rect(
-                        camViewportNormalized.x * targetWidth,
-                        camViewportNormalized.y * targetHeight,
-                        camViewportNormalized.width * targetWidth,
-                        camViewportNormalized.height * targetHeight);
-                    cmd.SetViewport(scaledTargetViewportInPixels);
-                }
-                else
-                    cmd.SetViewport(cameraData.pixelRect);
+                // KORION: make sure viewport respects pixel size and scaling
+                cmd.SetViewport(new Rect(0,0,cameraData.pixelWidth * cameraData.renderScale, cameraData.pixelHeight * cameraData.renderScale));
             }
-
 
             Blitter.BlitTexture(cmd, sourceTextureHdl, scaleBias, material, 0);
         }
