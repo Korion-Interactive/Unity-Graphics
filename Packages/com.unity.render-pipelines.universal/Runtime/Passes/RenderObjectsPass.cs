@@ -195,9 +195,26 @@ namespace UnityEngine.Rendering.Universal
                 // KORION: make sure viewport matches intended size & render scale                
                 if (passData.renderPassEvent == RenderPassEvent.AfterRendering)
                 {
-                    float width = Mathf.CeilToInt(pixelRect.width / passData.cameraData.renderScale);
+                    int screenWidth = Screen.width;
+                    int screenHeight = Screen.height;
+                    float actualAspect = screenWidth / (float)screenHeight;
                     float height = Mathf.CeilToInt(pixelRect.height / passData.cameraData.renderScale);
-                    cmd.SetViewport(new Rect(camera.rect.x * width, camera.rect.y * height, pixelRect.width, pixelRect.height));
+                    float width = Mathf.CeilToInt(pixelRect.width / passData.cameraData.renderScale);
+                    float scaledScreenHeight = (float)screenHeight / passData.cameraData.renderScale;
+                    float scaledScreenWidth = (float)screenWidth / passData.cameraData.renderScale;
+                    if (height == scaledScreenHeight)
+                    {
+                        width = screenWidth;
+                    }
+                    else if (width == scaledScreenWidth)
+                    {
+                        height = screenHeight;
+                    }
+                    else
+                    {
+                        width = height * actualAspect;
+                    }
+                    cmd.SetViewport(new Rect(camera.rect.x * screenWidth, camera.rect.y * screenHeight, pixelRect.width, pixelRect.height));
                 }
                 cmd.DrawRendererList(rendererList);
             }
