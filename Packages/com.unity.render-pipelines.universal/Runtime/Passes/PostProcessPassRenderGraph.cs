@@ -1391,9 +1391,10 @@ namespace UnityEngine.Rendering.Universal
                     cmd.SetViewport(targetViewportInPixels);
                 }
                 else
-                    cmd.SetViewport(cameraData.pixelRect);
+                    //cmd.SetViewport(cameraData.pixelRect);
+                    // KORION: make sure viewport respects pixel size and scaling
+                    cmd.SetViewport(new Rect(0,0,cameraData.pixelWidth * cameraData.renderScale, cameraData.pixelHeight * cameraData.renderScale));
             }
-
 
             Blitter.BlitTexture(cmd, sourceTextureHdl, scaleBias, material, 0);
         }
