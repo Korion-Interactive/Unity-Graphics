@@ -1350,6 +1350,7 @@ namespace UnityEngine.Rendering.Universal
             cameraData.targetTexture = baseCamera.targetTexture;
             cameraData.cameraType = baseCamera.cameraType;
             bool isSceneViewCamera = cameraData.isSceneViewCamera;
+            float renderScaleOverride = -1;
 
             ///////////////////////////////////////////////////////////////////
             // Environment and Post-processing settings                       /
@@ -1375,6 +1376,7 @@ namespace UnityEngine.Rendering.Universal
                 cameraData.antialiasingQuality = baseAdditionalCameraData.antialiasingQuality;
                 cameraData.xrRendering = baseAdditionalCameraData.allowXRRendering && XRSystem.displayActive;
                 cameraData.allowHDROutput = baseAdditionalCameraData.allowHDROutput;
+                renderScaleOverride = baseAdditionalCameraData.renderScaleOverride;
             }
             else
             {
@@ -1409,7 +1411,8 @@ namespace UnityEngine.Rendering.Universal
             // Scale is only enabled for gameview.
             const float kRenderScaleThreshold = 0.05f;
             bool disableRenderScale = ((Mathf.Abs(1.0f - settings.renderScale) < kRenderScaleThreshold) || isScenePreviewOrReflectionCamera);
-            cameraData.renderScale = disableRenderScale ? 1.0f : settings.renderScale;
+            cameraData.renderScale = renderScaleOverride > 0 ? renderScaleOverride : settings.renderScale;
+            cameraData.renderScale = disableRenderScale ? 1.0f : cameraData.renderScale;
 
             bool enableRenderGraph =
                 GraphicsSettings.TryGetRenderPipelineSettings<RenderGraphSettings>(out var renderGraphSettings) &&
