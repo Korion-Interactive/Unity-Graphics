@@ -143,6 +143,11 @@ half4 fragParticleUnlit(VaryingsParticle input) : SV_Target
     ParticleParams particleParams;
     InitParticleParams(input, particleParams);
 
+#if defined(_DITHERING_KEYWORD_DECLARED)
+    float alpha = InterleavedGradientNoise(input.clipPos.xy, 0);
+    clip(_Dither-alpha);
+#endif
+
     SurfaceData surfaceData;
     InitializeSurfaceData(particleParams, surfaceData);
     InputData inputData;

@@ -9,6 +9,8 @@ Shader "Universal Render Pipeline/Particles/Unlit"
         [HDR] _EmissionColor("Color", Color) = (0,0,0)
         _EmissionMap("Emission", 2D) = "white" {}
 
+        _Dither("Dither", Range(0.0, 1.0)) = 1.0
+
         // -------------------------------------
         // Particle specific
         _SoftParticlesNearFadeDistance("Soft Particles Near Fade", Float) = 0.0
@@ -103,6 +105,7 @@ Shader "Universal Render Pipeline/Particles/Unlit"
             #pragma shader_feature_local _SOFTPARTICLES_ON
             #pragma shader_feature_local _FADING_ON
             #pragma shader_feature_local _DISTORTION_ON
+            #pragma shader_feature_local_fragment _DITHERING
             #pragma shader_feature_local_fragment _ALPHATEST_ON
             #pragma shader_feature_local_fragment _SURFACE_TYPE_TRANSPARENT
             #pragma shader_feature_local_fragment _ _ALPHAPREMULTIPLY_ON _ALPHAMODULATE_ON
@@ -195,6 +198,7 @@ Shader "Universal Render Pipeline/Particles/Unlit"
             // Material Keywords
             #pragma shader_feature_local _ _NORMALMAP
             #pragma shader_feature_local _ _ALPHATEST_ON
+            #pragma shader_feature_local_fragment _DITHERING
             #pragma shader_feature_local_fragment _ _COLOROVERLAY_ON _COLORCOLOR_ON _COLORADDSUBDIFF_ON
 
             // -------------------------------------

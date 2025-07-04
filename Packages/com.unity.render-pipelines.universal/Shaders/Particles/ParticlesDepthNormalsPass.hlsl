@@ -50,6 +50,11 @@ half4 DepthNormalsFragment(VaryingsDepthNormalsParticle input) : SV_TARGET
     UNITY_SETUP_INSTANCE_ID(input);
     UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(input);
 
+    #if defined(_DITHERING_KEYWORD_DECLARED)
+        float alpha = InterleavedGradientNoise(input.clipPos.xy, 0);
+        clip(_Dither-alpha);
+    #endif
+
     // Inputs...
     #if defined(_ALPHATEST_ON) || defined(_NORMALMAP)
         float2 uv = input.texcoord;
