@@ -216,6 +216,12 @@ FragmentOutput LitGBufferPassFragment(Varyings input)
     LODFadeCrossFade(input.positionCS);
 #endif
 
+#if defined(_DITHERING_KEYWORD_DECLARED)
+    float alpha = InterleavedGradientNoise(input.positionCS.xy, 0);
+    clip(_Dither-alpha);
+#endif
+
+
     InputData inputData;
     InitializeInputData(input, surfaceData.normalTS, inputData);
     SETUP_DEBUG_TEXTURE_DATA(inputData, UNDO_TRANSFORM_TEX(input.uv, _BaseMap));

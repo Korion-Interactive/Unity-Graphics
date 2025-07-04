@@ -46,6 +46,11 @@ namespace UnityEditor
             /// Use this for additional details foldout.
             /// </summary>
             Details = 1 << 3,
+
+            /// <summary>
+            /// Korion: Used for custom shader aditions
+            /// </summary>
+            Custom = 1 << 4,
         }
 
         /// <summary>
@@ -203,6 +208,12 @@ namespace UnityEditor
             /// </summary>
             public static readonly GUIContent AdvancedLabel = EditorGUIUtility.TrTextContent("Advanced Options",
                 "These settings affect behind-the-scenes rendering and underlying calculations.");
+
+            /// <summary>
+            /// Korion: The text and tooltip for the custom options GUI.
+            /// </summary>
+            public static readonly GUIContent CustomLabel = EditorGUIUtility.TrTextContent("Custom Options",
+                "These settings affect shader options added by KORION.");
 
             /// <summary>
             /// The text and tooltip for the Surface Type GUI.
@@ -408,6 +419,13 @@ namespace UnityEditor
         /// </summary>
         protected MaterialProperty queueControlProp { get; set; }
 
+        // KORION: Custom Properties here
+
+        /// <summary>
+        /// The MaterialProperty for dithering amount.
+        /// </summary>
+        protected MaterialProperty ditherAmountProp { get; set; }
+
         /// <summary>
         /// Used to sure that needed setup (ie keywords/render queue) are set up when switching some existing material to a universal shader.
         /// </summary>
@@ -469,6 +487,9 @@ namespace UnityEditor
             emissionMapProp = FindProperty(Property.EmissionMap, properties, false);
             emissionColorProp = FindProperty(Property.EmissionColor, properties, false);
             queueOffsetProp = FindProperty(Property.QueueOffset, properties, false);
+
+            // KORION: custom properties here
+            ditherAmountProp = FindProperty("_Dither", properties, false);
         }
 
         /// <inheritdoc/>
@@ -519,6 +540,9 @@ namespace UnityEditor
 
             if (filter.HasFlag(Expandable.Advanced))
                 m_MaterialScopeList.RegisterHeaderScope(Styles.AdvancedLabel, (uint)Expandable.Advanced, DrawAdvancedOptions);
+
+            if (filter.HasFlag(Expandable.Custom))
+                m_MaterialScopeList.RegisterHeaderScope(Styles.CustomLabel, (uint)Expandable.Custom, DrawCustomOptions);
         }
 
         /// <summary>
@@ -616,6 +640,16 @@ namespace UnityEditor
                 DrawQueueOffsetField();
             materialEditor.EnableInstancingField();
             DrawMotionVectorOptions(material);
+        }
+
+        /// <summary>
+        /// KORION: Draws the custom options GUI.
+        /// </summary>
+        /// <param name="material">The material to use.</param>
+        public virtual void DrawCustomOptions(Material material)
+        {
+            if (ditherAmountProp != null)
+                materialEditor.RangeProperty(ditherAmountProp, ditherAmountProp.displayName);
         }
 
         /// <summary>

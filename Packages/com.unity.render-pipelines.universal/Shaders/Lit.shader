@@ -22,6 +22,8 @@ Shader "Universal Render Pipeline/Lit"
         [ToggleOff] _SpecularHighlights("Specular Highlights", Float) = 1.0
         [ToggleOff] _EnvironmentReflections("Environment Reflections", Float) = 1.0
 
+        _Dither("Dither", Range(0.0, 1.0)) = 1.0
+
         _BumpScale("Scale", Float) = 1.0
         _BumpMap("Normal Map", 2D) = "bump" {}
 
@@ -121,6 +123,7 @@ Shader "Universal Render Pipeline/Lit"
             #pragma shader_feature_local _PARALLAXMAP
             #pragma shader_feature_local _RECEIVE_SHADOWS_OFF
             #pragma shader_feature_local _ _DETAIL_MULX2 _DETAIL_SCALED
+            #pragma shader_feature_local_fragment _DITHERING
             #pragma shader_feature_local_fragment _SURFACE_TYPE_TRANSPARENT
             #pragma shader_feature_local_fragment _ALPHATEST_ON
             #pragma shader_feature_local_fragment _ _ALPHAPREMULTIPLY_ON _ALPHAMODULATE_ON
@@ -255,6 +258,7 @@ Shader "Universal Render Pipeline/Lit"
             // -------------------------------------
             // Material Keywords
             #pragma shader_feature_local _NORMALMAP
+            #pragma shader_feature_local_fragment _DITHERING
             #pragma shader_feature_local_fragment _ALPHATEST_ON
             //#pragma shader_feature_local_fragment _ALPHAPREMULTIPLY_ON
             #pragma shader_feature_local_fragment _EMISSION
@@ -377,6 +381,7 @@ Shader "Universal Render Pipeline/Lit"
             #pragma shader_feature_local _PARALLAXMAP
             #pragma shader_feature_local _ _DETAIL_MULX2 _DETAIL_SCALED
             #pragma shader_feature_local _ALPHATEST_ON
+            #pragma shader_feature_local_fragment _DITHERING
             #pragma shader_feature_local_fragment _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
 
             // -------------------------------------

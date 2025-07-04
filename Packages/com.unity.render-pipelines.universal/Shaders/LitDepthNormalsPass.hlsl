@@ -106,6 +106,11 @@ void DepthNormalsFragment(
     #if defined(LOD_FADE_CROSSFADE)
         LODFadeCrossFade(input.positionCS);
     #endif
+    
+    #if defined(_DITHERING_KEYWORD_DECLARED)
+        float alpha = InterleavedGradientNoise(input.positionCS.xy, 0);
+        clip(_Dither-alpha);
+    #endif
 
     #if defined(_GBUFFER_NORMALS_OCT)
         float3 normalWS = normalize(input.normalWS);
